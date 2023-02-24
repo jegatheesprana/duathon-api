@@ -27,8 +27,9 @@ const getInventory = (req, res,next) => {
 }
 
 const addInventory = (req, res, next) => {
-
-    const {medicineId, pharmacyId, quantity, expDate, price} = req.body
+    const user = req.user;
+    const pharmacyId = user.pharmacy._id
+    const {medicineId, quantity, expDate, price} = req.body
     inventoryService.addInventory({medicineId, pharmacyId, quantity, expDate, price})
         .then((inventory) => {
             res.status(201).json(inventory)
