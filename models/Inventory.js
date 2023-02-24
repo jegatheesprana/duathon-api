@@ -7,6 +7,11 @@ const PharmacySchema = new Schema({
         ref: 'medicines',
         required: true
     },
+    pharmacyId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'pharmacys',
+        required: true
+    },
     quantity: {
         type: Number,
         required: true

@@ -1,3 +1,6 @@
+GET http://localhost:8000/pharmacy/pharmacys
+
+###
 POST http://localhost:8000/pharmacys
 content-type:application/json
 
@@ -28,4 +31,89 @@ content-type:application/json
     }
 }
 
+
+### Medicines
 ###
+POST http://localhost:8000/pharmacy/medicines
+content-type:application/json
+
+{
+    "name":"Lipitor",
+    "manufacture": "CVS Pharmacy",
+    "supplier":"Pfizer Inc"
+}
+
+###
+GET http://localhost:8000/pharmacy/medicines
+
+
+###
+GET http://localhost:8000/pharmacy/medicines/63f85c2a722da73b0cfc1d75
+
+
+###
+PUT http://localhost:8000/pharmacy/medicines/63f85c2a722da73b0cfc1d75
+content-type:application/json
+
+{
+    "name":"Lipitor",
+    "manufacture": "CVS Pharmacy",
+    "supplier":"Pfizer Inc."
+}
+
+###
+DELETE http://localhost:8000/pharmacy/medicines/63f85595cd28650decab175d
+
+###
+PUT http://localhost:8000/pharmacy/medicines/status/63f85c2a722da73b0cfc1d75
+content-type:application/json
+
+{
+    "status":false
+}
+
+
+### Inventory
+###
+POST http://localhost:8000/pharmacy/inventories
+content-type:application/json
+
+{
+    "medicineId":"63f85c2a722da73b0cfc1d75",
+    "pharmacyId":"63f860ec55b934277811bdb0",
+    "quantity": 2,
+    "expDate": "2024/12/01",
+    "price":100
+}
+
+###
+GET http://localhost:8000/pharmacy/inventories/
+
+###
+GET http://localhost:8000/pharmacy/inventories/63f860ec55b934277811bdb0
+
+
+###
+PUT http://localhost:8000/pharmacy/inventories/63f87805df6c8307cce5b8a1
+content-type:application/json
+
+{
+    
+    "quantity": 2,
+    "expDate": "2025/12/01",
+    "price":100,
+    "status": true
+}
+
+###
+DELETE http://localhost:8000/pharmacy/inventories/63f874492a8d1958602a2b1c
+
+###
+PUT http://localhost:8000/pharmacy/inventories/status/63f874492a8d1958602a2b1c
+content-type:application/json
+
+{
+    "status":false
+}
+
+
