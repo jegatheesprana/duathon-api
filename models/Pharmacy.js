@@ -1,9 +1,10 @@
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
 const PharmacySchema = new Schema({
     name: {
         type: String,
-        required : [true, "Pharmacy name is required!"]
+        required: [true, "Pharmacy name is required!"]
     },
     email: {
         type: String,
@@ -58,7 +59,7 @@ const PharmacySchema = new Schema({
                 validate: {
                     validator: function (v) {
                         const value = parseInt(v)
-                        return (value<=23 && value>=0);
+                        return (value <= 23 && value >= 0);
                     },
                     message: '{VALUE} is not a valid hour!'
                 }
@@ -69,7 +70,7 @@ const PharmacySchema = new Schema({
                 validate: {
                     validator: function (v) {
                         const value = parseInt(v)
-                        return (value<=59 && value>=0);
+                        return (value <= 59 && value >= 0);
                     },
                     message: '{VALUE} is not a valid minute!'
                 }
@@ -82,7 +83,7 @@ const PharmacySchema = new Schema({
                 validate: {
                     validator: function (v) {
                         const value = parseInt(v)
-                        return (value<=23 && value>=0);
+                        return (value <= 23 && value >= 0);
                     },
                     message: '{VALUE} is not a valid hour!'
                 }
@@ -93,7 +94,7 @@ const PharmacySchema = new Schema({
                 validate: {
                     validator: function (v) {
                         const value = parseInt(v)
-                        return (value<=59 && value>=0);
+                        return (value <= 59 && value >= 0);
                     },
                     message: '{VALUE} is not a valid minute!'
                 }
@@ -130,7 +131,7 @@ const PharmacySchema = new Schema({
                 message: '{VALUE} is not a valid 10 digit number!'
             }
         },
-        nic : {
+        nic: {
             type: String,
             trim: true,
             validate: {
