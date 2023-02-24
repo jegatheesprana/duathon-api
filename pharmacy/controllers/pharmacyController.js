@@ -27,17 +27,17 @@ const getPharmacy = (req, res) => {
 }
 
 const createPharmacy = (req, res) => {
-    const { code, name, details, buildingId, floorId, ownerId, status } = req.body
-    if (!code | !name || !floorId) {
-        return res.status(500).send("Bad Request")
-    }
-    pharmacyService.createPharmacy({ code, name, details, floorId, buildingId, ownerId, status })
+    const { name, email, address, phone, licenseNumber, website, operationgHours, password, owner } = req.body
+    // if (!code | !name || !floorId) {
+    //     return res.status(500).send("Bad Request")
+    // }
+    pharmacyService.createPharmacy({ name, email, address, phone, licenseNumber, website, operationgHours, password, owner })
         .then((pharmacy) => {
             res.status(201).json(pharmacy)
         })
         .catch((err) => {
             console.log(err)
-            return res.status(500).send("Internal Server Error")
+            return res.status(400).send("Internal Server Error")
         })
         .catch(error => next(error))
 }

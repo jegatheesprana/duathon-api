@@ -115,9 +115,9 @@ exports.getPharmacy = (pharmacyId) => {
     ]).then(data => data[0])
 }
 
-exports.createPharmacy = ({ code, name, details, floorId, ownerId, buildingId, status }) => {
+exports.createPharmacy = ({  name, email, address, phone, licenseNumber, website, operationgHours, password, owner }) => {
     const pharmacy = new Pharmacy({
-        code, name, details, floorId, buildingId, ownerId, status
+        name, email, address, phone, licenseNumber, website, operationgHours, password, owner
     })
     return pharmacy.save()
 }

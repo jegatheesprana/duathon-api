@@ -1,42 +1,137 @@
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
-const Image = require('./schemas/Image')
 
 const PharmacySchema = new Schema({
-    code: {
-        type: String,
-        required: true
-    },
     name: {
         type: String,
-        required: true
+        required : [true, "Pharmacy name is required!"]
     },
-    details: {
+    email: {
         type: String,
-        required: false
+        required: [true, "Pharmacy email is required!"],
+        unique: [true, "Email already exists in database!"],
+        validate: {
+            validator: function (v) {
+                return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+            },
+            message: '{VALUE} is not a valid email!'
+        }
     },
-    buildingId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'buildings',
-        required: true
+    address: {
+        type: String,
+        required: [true, "Pharmacy address is required!"],
     },
-    floorId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'buildings',
-        required: true
+    phone: {
+        type: String,
+        required: [true, "Pharmacy phone no is required!"],
+        trim: true,
+        validate: {
+            validator: function (v) {
+                return /^[0-9]{9,10}/.test(v);
+            },
+            message: '{VALUE} is not a valid 10 digit number!'
+        }
     },
-    ownerId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'customers'
+    licenseNumber: {
+        type: String,
+        unique: [true, "Pharmacy license number already exists in database!"],
+        required: [true, "Pharmacy license number is required!"],
     },
-    images: [Image],
-    status: {
-        type: Boolean,
-        default: true
+    website: {
+        type: String,
+    },
+    operationgHours: {
+        from: {
+            hour: {
+                type: Number,
+                default: 0,
+                validate: {
+                    validator: function (v) {
+                        const value = parseInt(v)
+                        return (value<=23 && value>=0);
+                    },
+                    message: '{VALUE} is not a valid hour!'
+                }
+            },
+            minute: {
+                type: Number,
+                default: 0,
+                validate: {
+                    validator: function (v) {
+                        const value = parseInt(v)
+                        return (value<=59 && value>=0);
+                    },
+                    message: '{VALUE} is not a valid minute!'
+                }
+            }
+        },
+        to: {
+            hour: {
+                type: Number,
+                default: 0,
+                validate: {
+                    validator: function (v) {
+                        const value = parseInt(v)
+                        return (value<=23 && value>=0);
+                    },
+                    message: '{VALUE} is not a valid hour!'
+                }
+            },
+            minute: {
+                type: Number,
+                default: 0,
+                validate: {
+                    validator: function (v) {
+                        const value = parseInt(v)
+                        return (value<=59 && value>=0);
+                    },
+                    message: '{VALUE} is not a valid minute!'
+                }
+            }
+        }
+    },
+    password: {
+        type: String,
+        required: [true, "Pharmacy password is required!"],
+    },
+    owner: {
+        name: {
+            type: String,
+        },
+        email: {
+            type: String,
+            validate: {
+                validator: function (v) {
+                    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+                },
+                message: '{VALUE} is not a valid email!'
+            }
+        },
+        address: {
+            type: String,
+        },
+        phone: {
+            type: String,
+            trim: true,
+            validate: {
+                validator: function (v) {
+                    return /^[0-9]{9,10}/.test(v);
+                },
+                message: '{VALUE} is not a valid 10 digit number!'
+            }
+        },
+        nic : {
+            type: String,
+            trim: true,
+            validate: {
+                validator: function (v) {
+                    return /^([0-9]{9}[x|X|v|V]|[0-9]{12})$/.test(v);
+                },
+                message: '{VALUE} is not a valid NIC number!'
+            }
+        }
     }
 }, { timestamps: true });
 
+const PharmacyModel = mongoose.model('pharmacy', PharmacySchema);
 
-const Pharmacy = mongoose.model('pharmacy', PharmacySchema);
-module.exports = Pharmacy
-
+module.exports = PharmacyModel;

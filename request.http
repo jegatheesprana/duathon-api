@@ -1,0 +1,31 @@
+POST http://localhost:8000/pharmacys
+content-type:application/json
+
+{
+    "name" : "Health Gurd",
+    "email": "example2@example.com",
+    "address": "No 139/A, Dharmapala Mawatha, Colombo 07, Sri Lanka",
+    "phone": "0761234567",
+    "licenseNumber": "49494JOJ",
+    "website": "onlinestore@sunshineholdings.lk",
+    "operationgHours": {
+        "from": {
+            "hour": "09",
+            "minute" : "00"
+        },
+        "to": {
+            "hour": "09",
+            "minute" : "00"
+        }
+    },
+    "password": "password",
+    "owner": {
+        "name": "Yathu",
+        "email": "example2@example.com",
+        "address": "No 139/A, Dharmapala Mawatha, Colombo 07, Sri Lanka",
+        "phone": "",
+        "nic"
+    }
+}
+
+###
