@@ -1,17 +1,19 @@
 const inventoryService = require('../services/inventoryService')
 
-const getAllInventories = (req, res, next)=>{
-    inventoryService.getAllInventories()
-        .then(data =>{
+const getAllInventories = (req, res, next) => {
+    const user = req.user;
+    const { pharmacyId } = user
+    inventoryService.getInventory(pharmacyId)
+        .then(data => {
             res.json(data)
         })
-        .catch( err =>{
+        .catch(err => {
             console.log(err)
             return res.status(500).send("Internal Server Error")
         })
 }
 
-const getInventory = (req, res,next) => {
+const getInventory = (req, res, next) => {
     const { pharmacyId } = req.params
     if (!pharmacyId) {
         return res.status(500).send("Bad Request")
@@ -20,7 +22,7 @@ const getInventory = (req, res,next) => {
         .then(data => {
             res.json(data)
         })
-        .catch( err =>{
+        .catch(err => {
             console.log(err)
             return res.status(500).send("Internal Server Error")
         })
@@ -28,8 +30,8 @@ const getInventory = (req, res,next) => {
 
 const addInventory = (req, res, next) => {
 
-    const {medicineId, pharmacyId, quantity, expDate, price} = req.body
-    inventoryService.addInventory({medicineId, pharmacyId, quantity, expDate, price})
+    const { medicineId, pharmacyId, quantity, expDate, price } = req.body
+    inventoryService.addInventory({ medicineId, pharmacyId, quantity, expDate, price })
         .then((inventory) => {
             res.status(201).json(inventory)
         })
@@ -43,10 +45,10 @@ const addInventory = (req, res, next) => {
 const updateInventory = (req, res) => {
     const { inventoryId } = req.params
     const { quantity, expDate, price, status } = req.body
-    if ( !inventoryId ) {
+    if (!inventoryId) {
         return res.status(500).send("Bad Request")
     }
-    inventoryService.updateInventory({ inventoryId, quantity, expDate, price, status})
+    inventoryService.updateInventory({ inventoryId, quantity, expDate, price, status })
         .then(() => {
             res.status(201).json({ status: true })
         })
@@ -58,7 +60,7 @@ const updateInventory = (req, res) => {
 }
 
 const deleteInventory = (req, res) => {
-    const { inventoryId} = req.params
+    const { inventoryId } = req.params
     if (!inventoryId) {
         return res.status(500).send("Bad Request")
     }
@@ -89,7 +91,7 @@ const changeStatus = (req, res) => {
         })
         .catch(error => next(error))
 }
-module.exports =  {
+module.exports = {
     getAllInventories,
     getInventory,
     addInventory,

@@ -1,4 +1,5 @@
 const userService = require('../services/userService')
+const pharmacyService = require('../services/pharmacyServices')
 
 const getMe = (req, res, next) => {
     const user = req.user;
@@ -18,16 +19,20 @@ const getMe = (req, res, next) => {
 }
 
 const updateInfo = (req, res, next) => {
-    const { _id: id } = req.user
-    const { firstname, lastname, phone, address } = req.body;
-    userService.updateInfo(id, { firstname, lastname, phone, address })
-        .then(result => {
+    const { pharmacy } = req.user
+    const { name, email, address, phone, licenseNumber, website, operationgHours, owner } = req.body
+    if (!pharmacyId || !email | !name || !address || !phone || !licenseNumber) {
+        return res.status(500).send("Bad Request")
+    }
+    pharmacyService.updatePharmacy({ pharmacyId: pharmacy._id, name, email, address, phone, licenseNumber, website, operationgHours, owner })
+        .then((result) => {
             res.status(201).json({ status: true })
         })
-        .catch(e => {
-            console.log(e)
-            res.status(500).send("An Error occured")
+        .catch((err) => {
+            console.log(err)
+            return res.status(500).send("Internal Server Error")
         })
+        .catch(error => next(error))
 }
 
 const changePassword = async (req, res, next) => {
