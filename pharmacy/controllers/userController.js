@@ -3,7 +3,7 @@ const pharmacyService = require('../services/pharmacyServices')
 
 const getMe = (req, res, next) => {
     const user = req.user;
-    if (user.pharmacy) {
+    if (user && user.pharmacy) {
         userService.getMe(user.pharmacy._id)
             .then(result => {
                 res.json(result)
