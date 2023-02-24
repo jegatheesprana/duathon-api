@@ -28,9 +28,9 @@ const getPharmacy = (req, res) => {
 
 const createPharmacy = (req, res) => {
     const { name, email, address, phone, licenseNumber, website, operationgHours, password, owner } = req.body
-    // if (!code | !name || !floorId) {
-    //     return res.status(500).send("Bad Request")
-    // }
+    if (!email | !name || !address || !phone || !licenseNumber || !password) {
+        return res.status(500).send("Bad Request")
+    }
     pharmacyService.createPharmacy({ name, email, address, phone, licenseNumber, website, operationgHours, password, owner })
         .then((pharmacy) => {
             res.status(201).json(pharmacy)
@@ -44,11 +44,11 @@ const createPharmacy = (req, res) => {
 
 const updatePharmacy = (req, res) => {
     const { pharmacyId } = req.params
-    const { code, name, details, floorId, buildingId, ownerId, status } = req.body
-    if (!pharmacyId || !code | !name || !floorId) {
+    const { name, email, address, phone, licenseNumber, website, operationgHours, owner } = req.body
+    if (!pharmacyId || !email | !name || !address || !phone || !licenseNumber) {
         return res.status(500).send("Bad Request")
     }
-    pharmacyService.updatePharmacy({ pharmacyId, code, name, details, floorId, buildingId, ownerId, status })
+    pharmacyService.updatePharmacy({ name, email, address, phone, licenseNumber, website, operationgHours, owner })
         .then(() => {
             res.status(201).json({ status: true })
         })

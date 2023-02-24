@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 const Pharmacy = require('../../models/Pharmacy')
-const Building = require('../../models/Building')
+const bcrypt = require('bcryptjs');
 
 exports.getAllPharmacys = () => {
     return Pharmacy.find()
@@ -14,118 +14,26 @@ exports.getPharmacy = (pharmacyId) => {
             }
         },
         {
-            $lookup: {
-                from: 'buildings',
-                localField: 'floorId',
-                foreignField: 'floors._id',
-                as: 'building'
-            }
-        },
-        {
-            $lookup: {
-                from: 'customers',
-                localField: 'ownerId',
-                foreignField: '_id',
-                as: 'owner'
-            }
-        },
-        {
-            $addFields: {
-                building: {
-                    $arrayElemAt: ['$building', 0]
-                },
-                owner: {
-                    $arrayElemAt: ['$owner', 0]
-                }
-            }
-        },
-        {
-            $addFields: {
-                floor: {
-                    $arrayElemAt: [
-                        {
-                            $filter: {
-                                input: '$building.floors',
-                                as: 'floor',
-                                cond: {
-                                    $eq: ['$$floor._id', '$floorId']
-                                }
-                            }
-                        },
-                        0
-                    ]
-                }
-            }
-        },
-        {
-            $lookup: {
-                from: 'facilitymemberships',
-                localField: '_id',
-                foreignField: 'pharmacyId',
-                as: 'facilityMemberships'
-            }
-        },
-        {
-            $lookup: {
-                from: 'facilities',
-                localField: 'facilityMemberships.facilityId',
-                foreignField: '_id',
-                as: 'facilities'
-            }
-        },
-        {
-            $addFields: {
-                facilityMemberships: {
-                    $map: {
-                        input: '$facilityMemberships',
-                        as: 'facilityMembership',
-                        in: {
-                            $mergeObjects: [
-                                '$$facilityMembership',
-                                {
-                                    facility: {
-                                        $arrayElemAt: [
-                                            {
-                                                $filter: {
-                                                    input: '$facilities',
-                                                    as: 'facility',
-                                                    cond: [{
-                                                        $eq: ['$$facility._id', '$$facilityMembership.facilityId']
-                                                    }]
-                                                }
-                                            },
-                                            0
-                                        ]
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                }
-            }
-        },
-        {
             $project: {
-                facilities: 0,
-                'building.floors': 0,
-                'owner.password': 0,
-                'owner.accountRecovery': 0
+                password: 0,
             }
         }
     ]).then(data => data[0])
 }
 
-exports.createPharmacy = ({  name, email, address, phone, licenseNumber, website, operationgHours, password, owner }) => {
+exports.createPharmacy = async ({  name, email, address, phone, licenseNumber, website, operationgHours, password, owner }) => {
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
     const pharmacy = new Pharmacy({
-        name, email, address, phone, licenseNumber, website, operationgHours, password, owner
+        name, email, address, phone, licenseNumber, website, operationgHours, password: hashedPassword, owner
     })
     return pharmacy.save()
 }
 
-exports.updatePharmacy = ({ pharmacyId, code, name, details, floorId, ownerId, buildingId, status }) => {
+exports.updatePharmacy = ({ pharmacyId, name, email, address, phone, licenseNumber, website, operationgHours, owner }) => {
     return Pharmacy.updateOne({ _id: pharmacyId }, {
         $set: {
-            code, name, details, floorId, buildingId, ownerId, status
+            name, email, address, phone, licenseNumber, website, operationgHours, owner
         }
     })
 }

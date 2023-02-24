@@ -17,8 +17,19 @@ const PharmacySchema = new Schema({
         }
     },
     address: {
-        type: String,
-        required: [true, "Pharmacy address is required!"],
+        lane : {
+            type: String,
+            required: [true, "Pharmacy lane is required!"],
+        },
+        town : {
+            type: String,
+            required: [true, "Pharmacy town is required!"],
+        },
+        district : {
+            type: String,
+            required: [true, "Pharmacy district is required!"],
+            enum : ["Jaffna", "Kilinochchi", "Mannar", "Mullaitivu", "Vavuniya", "Puttalam", "Kurunegala", "Gampaha", "Colombo", "Kalutara", "Anuradhapura", "Polonnaruwa", "Matale", "Kandy", "Nuwara", "Eliya", "Kegalle", "Ratnapura", "Trincomalee", "Batticaloa", "Ampara", "Badulla", "Monaragala", "Hambantota", "Matara", "Galle"]
+        }
     },
     phone: {
         type: String,
@@ -129,6 +140,10 @@ const PharmacySchema = new Schema({
                 message: '{VALUE} is not a valid NIC number!'
             }
         }
+    },
+    enabled: {
+        type: Boolean,
+        default: false
     }
 }, { timestamps: true });
 
