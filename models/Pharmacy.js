@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const Image = require('./schemas/Image')
 
 const PharmacySchema = new Schema({
     code: {
@@ -29,7 +28,6 @@ const PharmacySchema = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'customers'
     },
-    images: [Image],
     status: {
         type: Boolean,
         default: true

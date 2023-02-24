@@ -1,42 +1,24 @@
 const mongoose = require('mongoose')
-const Pharmacy = require('../../models/Pharmacy')
+const Medicine = require('../../models/Medicine')
 const Building = null
 
-exports.getAllPharmacys = () => {
-    return Pharmacy.find()
+exports.getAllMedicines = () => {
+    return Medicine.find()
 }
 
-exports.getPharmacy = (pharmacyId) => {
-    return Pharmacy.aggregate([
+exports.getMedicine = (MedicineId) => {
+    return Medicine.aggregate([
         {
             $match: {
-                _id: mongoose.Types.ObjectId(pharmacyId)
+                _id: mongoose.Types.ObjectId(MedicineId)
             }
         },
         {
             $lookup: {
-                from: 'buildings',
-                localField: 'floorId',
-                foreignField: 'floors._id',
-                as: 'building'
-            }
-        },
-        {
-            $lookup: {
-                from: 'customers',
-                localField: 'ownerId',
-                foreignField: '_id',
-                as: 'owner'
-            }
-        },
-        {
-            $addFields: {
-                building: {
-                    $arrayElemAt: ['$building', 0]
-                },
-                owner: {
-                    $arrayElemAt: ['$owner', 0]
-                }
+                from: 'inventories',
+                localField: '_id',
+                foreignField: 'medicineId',
+                as: 'inventory'
             }
         },
         {
@@ -61,7 +43,7 @@ exports.getPharmacy = (pharmacyId) => {
             $lookup: {
                 from: 'facilitymemberships',
                 localField: '_id',
-                foreignField: 'pharmacyId',
+                foreignField: 'MedicineId',
                 as: 'facilityMemberships'
             }
         },
@@ -115,57 +97,29 @@ exports.getPharmacy = (pharmacyId) => {
     ]).then(data => data[0])
 }
 
-exports.createPharmacy = ({ code, name, details, floorId, ownerId, buildingId, status }) => {
-    const pharmacy = new Pharmacy({
-        code, name, details, floorId, buildingId, ownerId, status
+exports.createMedicine = ({ name, manufacture, supplier }) => {
+    const Medicine = new Medicine({
+        name, manufacture, supplier
     })
-    return pharmacy.save()
+    return Medicine.save()
 }
 
-exports.updatePharmacy = ({ pharmacyId, code, name, details, floorId, ownerId, buildingId, status }) => {
-    return Pharmacy.updateOne({ _id: pharmacyId }, {
+exports.updateMedicine = ({ medicineId, name, manufacture, supplier }) => {
+    return Medicine.updateOne({ _id: medicineId }, {
         $set: {
-            code, name, details, floorId, buildingId, ownerId, status
+            name, manufacture, supplier
         }
     })
 }
 
-exports.deletePharmacy = (pharmacyId) => {
-    return Pharmacy.deleteOne({ _id: pharmacyId })
+exports.deleteMedicine = (medicineId) => {
+    return Medicine.deleteOne({ _id: medicineId })
 }
 
-exports.changeStatus = ({ pharmacyId, status }) => {
-    return Pharmacy.updateOne({ _id: pharmacyId }, {
+exports.changeStatus = ({ medicineId, status }) => {
+    return Medicine.updateOne({ _id: medicineId }, {
         $set: {
             status
-        }
-    })
-}
-
-exports.getPharmacyByFloor = (floorId) => {
-    return Pharmacy.aggregate([
-        {
-            $match: {
-                floorId: mongoose.Types.ObjectId(floorId)
-            }
-        }
-    ])
-}
-
-exports.getPharmacyByBuilding = async (buildingId) => {
-    return Pharmacy.aggregate([
-        {
-            $match: {
-                buildingId: mongoose.Types.ObjectId(buildingId)
-            }
-        }
-    ])
-}
-
-exports.updatePharmacyOwner = ({ pharmacyId }, { ownerId }) => {
-    return Pharmacy.updateOne({ _id: pharmacyId }, {
-        $set: {
-            ownerId: ownerId || null
         }
     })
 }
