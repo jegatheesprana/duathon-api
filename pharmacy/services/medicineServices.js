@@ -98,10 +98,10 @@ exports.getMedicine = (MedicineId) => {
 }
 
 exports.createMedicine = ({ name, manufacture, supplier }) => {
-    const Medicine = new Medicine({
+    const medicine = new Medicine({
         name, manufacture, supplier
     })
-    return Medicine.save()
+    return medicine.save()
 }
 
 exports.updateMedicine = ({ medicineId, name, manufacture, supplier }) => {
