@@ -3,10 +3,10 @@
 Pharmacy Website api developed for Duothon 3.0 competition
 
 ### Project Maintainers
-	Pranavan Jegatheeswaran [@jegatheesprana](https://github.com/jegatheesprana)
-    Srikumaran Kajanan [@Kajanan98](https://github.com/Kajanan98)
-    Thakshyan Thanabalasingam [@Thakshayan](https://github.com/Thakshayan)
-    Yathurshan Kalanantharasan [@YathuNK](https://github.com/YathuNK)
+Pranavan Jegatheeswaran [@jegatheesprana](https://github.com/jegatheesprana)   
+Srikumaran Kajanan [@Kajanan98](https://github.com/Kajanan98)   
+Thakshyan Thanabalasingam [@Thakshayan](https://github.com/Thakshayan)   
+Yathurshan Kalanantharasan [@YathuNK](https://github.com/YathuNK)  
 
 ### Technology Stack
 	Node.js
