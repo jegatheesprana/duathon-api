@@ -6,6 +6,11 @@ const PharmacySchema = new Schema({
         type: String,
         required: true
     },
+    NDC: {
+        type: String,
+        unique: true,
+        required: true
+    },
     manufacture: {
         type: String,
         required: true
