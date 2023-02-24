@@ -1,7 +1,7 @@
 GET http://localhost:8000/pharmacy/pharmacys
 
 ###
-POST http://localhost:8000/pharmacys
+POST http://localhost:8000/pharmacy/pharmacys
 content-type:application/json
 
 {
