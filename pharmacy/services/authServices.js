@@ -1,31 +1,29 @@
-const Employee = require('../../models/Employee');
+const Pharmacy = require('../../models/Pharmacy')
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const sendMail = require("../../utils/email");
 const config = require('../../config/keys')
 const { makeUid } = require('../../utils/utils')
 
-exports.loginEmployee = async (email, password, rememberMe) => {
-    const employee = await Employee.findOne({ email })
-
-    if (employee && (await bcrypt.compare(password, employee.password))) {
-        const encryptedEmployee = {
-            employee: {
-                _id: employee.id,
-                email: employee.email
+exports.loginPharmacy = async (email, password, rememberMe) => {
+    const pharmacy = await Pharmacy.findOne({ email })
+    console.log(pharmacy)
+    if (pharmacy && (await bcrypt.compare(password, pharmacy.password))) {
+        const encryptedPharmacy = {
+            pharmacy: {
+                _id: pharmacy.id,
+                email: pharmacy.email
             },
             type: 'authorization',
-            role: 'employee'
+            role: 'pharmacy'
         }
+        let pharmacyCopy = JSON.parse(JSON.stringify(pharmacy))
+        delete pharmacyCopy.password
         return {
-            _id: employee.id,
-            accessToken: generateAccessToken(encryptedEmployee),
-            refreshToken: generateRefreshToken(encryptedEmployee, rememberMe),
-            employee: {
-                firstname: employee.firstname,
-                lastname: employee.lastname,
-                email: employee.email,
-            }
+            _id: pharmacy.id,
+            accessToken: generateAccessToken(encryptedPharmacy),
+            refreshToken: generateRefreshToken(encryptedPharmacy, rememberMe),
+            pharmacy: pharmacyCopy
         };
     } else {
         throw new Error("Invalid credientials")
@@ -34,10 +32,10 @@ exports.loginEmployee = async (email, password, rememberMe) => {
 
 exports.tokenRefresh = (refreshToken) => {
     try {
-        const decodedEmployee = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET)
-        delete decodedEmployee.exp
-        delete decodedEmployee.iat
-        const accessToken = generateAccessToken(decodedEmployee)
+        const decodedPharmacy = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET)
+        delete decodedPharmacy.exp
+        delete decodedPharmacy.iat
+        const accessToken = generateAccessToken(decodedPharmacy)
         return accessToken;
     } catch (error) {
         console.log(error)
@@ -46,23 +44,16 @@ exports.tokenRefresh = (refreshToken) => {
 }
 
 exports.forgotPassword = async (email) => {
-    const employee = await Employee.findOne({ email })
-    if (employee) {
+    const pharmacy = await Pharmacy.findOne({ email })
+    if (pharmacy) {
         const OTP = makeUid(6)
         const expiration = 30
         const expirationTime = Date.now() + expiration * 60 * 1000
-        // const accountRecovery = {
-        //     token: OTP,
-        //     expirationTime
-        // }
-        // const result = await Employee.updateOne({ _id: employee._id }, {
-        //     $set: { accountRecovery }
-        // })
-        employee.accountRecovery = {
+        pharmacy.accountRecovery = {
             OTP: OTP,
             expirationTime
         }
-        await employee.save()
+        await pharmacy.save()
 
         const resetUrl = config.FROENTEND_DOMAIN + "/" + config.PASSWORD_RESET_PATH + "/" + email + "/" + OTP
 
@@ -105,9 +96,9 @@ exports.forgotPassword = async (email) => {
 
 exports.verifyOTP = async ({ email, OTP }) => {
     try {
-        const employee = await Employee.findOne({ email })
+        const pharmacy = await Pharmacy.findOne({ email })
 
-        if (employee.accountRecovery && employee.accountRecovery.OTP === OTP) {
+        if (pharmacy.accountRecovery && pharmacy.accountRecovery.OTP === OTP) {
 
             return "Valid OTP"
 
@@ -121,16 +112,16 @@ exports.verifyOTP = async ({ email, OTP }) => {
 
 exports.resetPassword = async ({ email, OTP, newPassword }) => {
     try {
-        const employee = await Employee.findOne({ email })
+        const pharmacy = await Pharmacy.findOne({ email })
 
-        if (employee.accountRecovery && employee.accountRecovery.OTP === OTP) {
-            if (employee.accountRecovery.expirationTime && (employee.accountRecovery.expirationTime > Date.now())) {
+        if (pharmacy.accountRecovery && pharmacy.accountRecovery.OTP === OTP) {
+            if (pharmacy.accountRecovery.expirationTime && (pharmacy.accountRecovery.expirationTime > Date.now())) {
                 const salt = await bcrypt.genSalt(10);
                 const hashedPassword = await bcrypt.hash(newPassword, salt);
-                employee.password = hashedPassword
-                employee.accountRecovery = { OTP: null, expirationTime: null }
-                await employee.save()
-                // const result = await Employee.updateOne({ _id: employee._id }, {
+                pharmacy.password = hashedPassword
+                pharmacy.accountRecovery = { OTP: null, expirationTime: null }
+                await pharmacy.save()
+                // const result = await Pharmacy.updateOne({ _id: pharmacy._id }, {
                 //     $set: { password: hashedPassword, accountRecovery: { OTP: null, expirationTime: null } }
                 // })
                 return "Password Changed"
@@ -149,7 +140,7 @@ exports.resetPassword = async ({ email, OTP, newPassword }) => {
     }
 }
 
-exports.logout = (employeeId) => {
+exports.logout = (pharmacyId) => {
 
 }
 

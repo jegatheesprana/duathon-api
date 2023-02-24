@@ -1,10 +1,10 @@
-GET http://localhost:8000/pharmacies
+GET http://localhost:8000/pharmacy/pharmacies
 
 ###
-GET http://localhost:8000/pharmacies/63f8607755b934277811bda9
+GET http://localhost:8000/pharmacy/pharmacies/63f8607755b934277811bda9
 
 ###
-POST http://localhost:8000/pharmacies
+POST http://localhost:8000/pharmacy/pharmacies
 content-type:application/json
 
 {
@@ -39,7 +39,7 @@ content-type:application/json
 }
 
 ###
-PUT http://localhost:8000/pharmacies/63f8607755b934277811bda9
+PUT http://localhost:8000/pharmacy/pharmacies/63f8607755b934277811bda9
 content-type:application/json
 
 {
@@ -73,12 +73,40 @@ content-type:application/json
 }
 
 ###
-DELETE http://localhost:8000/pharmacies/63f8593c090a620500939caf
+DELETE http://localhost:8000/pharmacy/pharmacies/63f8607755b934277811bda9
 
 ###
-PUT http://localhost:8000/pharmacies/status/63f85e02249f502688db0c8c
+PUT http://localhost:8000/pharmacy/pharmacies/status/63f8607755b934277811bda9
 content-type:application/json
 
 {
     "enabled": true
+}
+
+
+#################################
+OWNER
+#################################
+POST http://localhost:8000/pharmacy/auth/login
+content-type:application/json
+
+{
+    "email": "example2@example.com",
+    "password": "password"
+}
+
+####
+POST http://localhost:8000/pharmacy/auth/refreshToken
+content-type:application/json
+
+{
+    "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaGFybWFjeSI6eyJfaWQiOiI2M2Y4NjBlYzU1YjkzNDI3NzgxMWJkYjAiLCJlbWFpbCI6ImV4YW1wbGUyQGV4YW1wbGUuY29tIn0sInR5cGUiOiJhdXRob3JpemF0aW9uIiwicm9sZSI6Im93bmVyIiwiaWF0IjoxNjc3MjI0MTE1LCJleHAiOjE2Nzc2NTYxMTV9.2IkIflKv4Um9lWJ_DvzQ64hwFTg846YA-Mv1BJLiw4k"
+}
+
+####
+POST http://localhost:8000/pharmacy/auth/forgotPassword/kalayathu1998@gmail.com
+content-type:application/json
+
+{
+    "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaGFybWFjeSI6eyJfaWQiOiI2M2Y4NjBlYzU1YjkzNDI3NzgxMWJkYjAiLCJlbWFpbCI6ImV4YW1wbGUyQGV4YW1wbGUuY29tIn0sInR5cGUiOiJhdXRob3JpemF0aW9uIiwicm9sZSI6Im93bmVyIiwiaWF0IjoxNjc3MjI0MTE1LCJleHAiOjE2Nzc2NTYxMTV9.2IkIflKv4Um9lWJ_DvzQ64hwFTg846YA-Mv1BJLiw4k"
 }

@@ -9,4 +9,5 @@ router.use('/user', require('./userRoute'));
 router.use('/pharmacies', require('./pharmacyRoute'));
 router.use('/medicines', require('./medicineRoute'));
 
+
 module.exports = router;

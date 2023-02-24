@@ -1,11 +1,11 @@
 const authServices = require("../services/authServices")
 // const asyncHandler = require('express-async-handler')
 
-const loginEmployeee = async (req, res, next) => {
+const loginPharmacy = async (req, res, next) => {
     const { email, password, rememberMe } = req.body;
 
     try {
-        const user = await authServices.loginEmployee(email, password, rememberMe)
+        const user = await authServices.loginPharmacy(email, password, rememberMe)
         res.json(user)
     } catch (error) {
         res.status(401).send(error.message)
@@ -79,7 +79,7 @@ const resetPassword = async (req, res, next) => {
 }
 
 module.exports = {
-    loginEmployeee,
+    loginPharmacy,
     tokenRefresh,
     forgotPassword,
     // getTokenDetail,

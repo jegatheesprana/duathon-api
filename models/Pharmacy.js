@@ -145,6 +145,16 @@ const PharmacySchema = new Schema({
     enabled: {
         type: Boolean,
         default: false
+    },
+    accountRecovery: {
+        OTP: {
+            type: String,
+            default: null
+        },
+        expirationTime: {
+            type: mongoose.Schema.Types.Date,
+            detault: null
+        }
     }
 }, { timestamps: true });
 
