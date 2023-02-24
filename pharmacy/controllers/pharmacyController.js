@@ -1,7 +1,7 @@
 const pharmacyService = require('../services/pharmacyServices')
 
-const getAllPharmacys = (req, res, next) => {
-    pharmacyService.getAllPharmacys()
+const getAllPharmacies = (req, res, next) => {
+    pharmacyService.getAllPharmacies()
         .then((data) => {
             res.json(data)
         })
@@ -18,6 +18,9 @@ const getPharmacy = (req, res) => {
     }
     pharmacyService.getPharmacy(pharmacyId)
         .then((data) => {
+            if (!data){
+                throw Error("Pharmacy not found!")
+            }
             res.json(data)
         })
         .catch((err) => {
@@ -28,9 +31,9 @@ const getPharmacy = (req, res) => {
 
 const createPharmacy = (req, res) => {
     const { name, email, address, phone, licenseNumber, website, operationgHours, password, owner } = req.body
-    // if (!code | !name || !floorId) {
-    //     return res.status(500).send("Bad Request")
-    // }
+    if (!email | !name || !address || !phone || !licenseNumber || !password) {
+        return res.status(500).send("Bad Request")
+    }
     pharmacyService.createPharmacy({ name, email, address, phone, licenseNumber, website, operationgHours, password, owner })
         .then((pharmacy) => {
             res.status(201).json(pharmacy)
@@ -44,12 +47,12 @@ const createPharmacy = (req, res) => {
 
 const updatePharmacy = (req, res) => {
     const { pharmacyId } = req.params
-    const { code, name, details, floorId, buildingId, ownerId, status } = req.body
-    if (!pharmacyId || !code | !name || !floorId) {
+    const { name, email, address, phone, licenseNumber, website, operationgHours, owner } = req.body
+    if (!pharmacyId || !email | !name || !address || !phone || !licenseNumber) {
         return res.status(500).send("Bad Request")
     }
-    pharmacyService.updatePharmacy({ pharmacyId, code, name, details, floorId, buildingId, ownerId, status })
-        .then(() => {
+    pharmacyService.updatePharmacy({pharmacyId, name, email, address, phone, licenseNumber, website, operationgHours, owner })
+        .then((result) => {
             res.status(201).json({ status: true })
         })
         .catch((err) => {
@@ -77,11 +80,11 @@ const deletePharmacy = (req, res) => {
 
 const changeStatus = (req, res) => {
     const { pharmacyId } = req.params
-    const { status } = req.body
-    if (!pharmacyId || status === undefined) {
+    const { enabled } = req.body
+    if (!pharmacyId || enabled === undefined) {
         return res.status(500).send("Bad Request")
     }
-    pharmacyService.changeStatus({ pharmacyId, status })
+    pharmacyService.changeStatus({ pharmacyId, enabled })
         .then(() => {
             res.status(201).json({ status: true })
         })
@@ -132,7 +135,7 @@ const updatePharmacyOwner = (req, res, next) => {
 }
 
 module.exports = {
-    getAllPharmacys,
+    getAllPharmacies,
     getPharmacy,
     createPharmacy,
     updatePharmacy,

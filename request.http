@@ -6,18 +6,22 @@ content-type:application/json
 
 {
     "name" : "Health Gurd",
-    "email": "example2@example.com",
-    "address": "No 139/A, Dharmapala Mawatha, Colombo 07, Sri Lanka",
-    "phone": "0761234567",
-    "licenseNumber": "49494JOJ",
+    "email": "yathurshan.18@cse.mrt.ac.lk",
+    "address": {
+        "lane": "No 139/A, Dharmapala Mawatha",
+        "town" : "Colombo 07",
+        "district": "Colombo"
+    },
+    "phone": "0761234337",
+    "licenseNumber": "AAA0003",
     "website": "onlinestore@sunshineholdings.lk",
     "operationgHours": {
         "from": {
-            "hour": "09",
+            "hour": "19",
             "minute" : "00"
         },
         "to": {
-            "hour": "09",
+            "hour": "18",
             "minute" : "00"
         }
     },
@@ -26,8 +30,8 @@ content-type:application/json
         "name": "Yathu",
         "email": "example2@example.com",
         "address": "No 139/A, Dharmapala Mawatha, Colombo 07, Sri Lanka",
-        "phone": "",
-        "nic"
+        "phone": "0769872564",
+        "nic" : "199812345678"
     }
 }
 

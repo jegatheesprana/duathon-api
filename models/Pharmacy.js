@@ -18,8 +18,19 @@ const PharmacySchema = new Schema({
         }
     },
     address: {
-        type: String,
-        required: [true, "Pharmacy address is required!"],
+        lane: {
+            type: String,
+            required: [true, "Pharmacy lane is required!"],
+        },
+        town: {
+            type: String,
+            required: [true, "Pharmacy town is required!"],
+        },
+        district: {
+            type: String,
+            required: [true, "Pharmacy district is required!"],
+            enum: ["Jaffna", "Kilinochchi", "Mannar", "Mullaitivu", "Vavuniya", "Puttalam", "Kurunegala", "Gampaha", "Colombo", "Kalutara", "Anuradhapura", "Polonnaruwa", "Matale", "Kandy", "Nuwara", "Eliya", "Kegalle", "Ratnapura", "Trincomalee", "Batticaloa", "Ampara", "Badulla", "Monaragala", "Hambantota", "Matara", "Galle"]
+        }
     },
     phone: {
         type: String,
@@ -27,9 +38,9 @@ const PharmacySchema = new Schema({
         trim: true,
         validate: {
             validator: function (v) {
-                return /^[0-9]{9,10}/.test(v);
+                return /^\d{9,10}$/.test(v)
             },
-            message: '{VALUE} is not a valid 10 digit number!'
+            message: '{VALUE} is not a valid phone number!'
         }
     },
     licenseNumber: {
@@ -115,9 +126,9 @@ const PharmacySchema = new Schema({
             trim: true,
             validate: {
                 validator: function (v) {
-                    return /^[0-9]{9,10}/.test(v);
+                    return /^\d{9,10}$/.test(v)
                 },
-                message: '{VALUE} is not a valid 10 digit number!'
+                message: '{VALUE} is not a valid phone number!'
             }
         },
         nic: {
@@ -130,9 +141,24 @@ const PharmacySchema = new Schema({
                 message: '{VALUE} is not a valid NIC number!'
             }
         }
+    },
+    enabled: {
+        type: Boolean,
+        default: false
+    },
+    accountRecovery: {
+        OTP: {
+            type: String,
+            default: null
+        },
+        expirationTime: {
+            type: mongoose.Schema.Types.Date,
+            detault: null
+        }
     }
 }, { timestamps: true });
 
+PharmacySchema.index({ name: 'text', 'address.district': 'text', 'address.lane': 'text' });
 const PharmacyModel = mongoose.model('pharmacy', PharmacySchema);
 
 module.exports = PharmacyModel;
