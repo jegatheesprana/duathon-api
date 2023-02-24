@@ -32,7 +32,7 @@ app.use(cors())
 
 //Routes
 // app.use('/admin', require('./admin/routes/index'))
-app.use('/', require('./pharmacy/routes/index'))
+app.use('/pharmacy', require('./pharmacy/routes/index'))
 // app.use('/user', require('./user/routes/index'))
 
 app.use(errorHandler);
