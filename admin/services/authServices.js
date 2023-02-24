@@ -1,29 +1,29 @@
-const Pharmacy = require('../../models/Pharmacy')
+const Admin = require('../../models/Admin')
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const sendMail = require("../../utils/email");
 const config = require('../../config/keys')
 const { makeUid } = require('../../utils/utils')
 
-exports.loginPharmacy = async (email, password, rememberMe) => {
-    const pharmacy = await Pharmacy.findOne({ email })
-    console.log(pharmacy)
-    if (pharmacy && (await bcrypt.compare(password, pharmacy.password))) {
-        const encryptedPharmacy = {
-            pharmacy: {
-                _id: pharmacy.id,
-                email: pharmacy.email
+exports.loginAdmin = async (email, password, rememberMe) => {
+    const admin = await Admin.findOne({ email })
+    console.log(admin)
+    if (admin && (await bcrypt.compare(password, admin.password))) {
+        const encryptedAdmin = {
+            admin: {
+                _id: admin.id,
+                email: admin.email
             },
             type: 'authorization',
-            role: 'pharmacy'
+            role: 'admin'
         }
-        let pharmacyCopy = JSON.parse(JSON.stringify(pharmacy))
-        delete pharmacyCopy.password
+        let adminCopy = JSON.parse(JSON.stringify(admin))
+        delete adminCopy.password
         return {
-            _id: pharmacy.id,
-            accessToken: generateAccessToken(encryptedPharmacy),
-            refreshToken: generateRefreshToken(encryptedPharmacy, rememberMe),
-            pharmacy: pharmacyCopy
+            _id: admin.id,
+            accessToken: generateAccessToken(encryptedAdmin),
+            refreshToken: generateRefreshToken(encryptedAdmin, rememberMe),
+            admin: adminCopy
         };
     } else {
         throw new Error("Invalid credientials")
@@ -32,10 +32,10 @@ exports.loginPharmacy = async (email, password, rememberMe) => {
 
 exports.tokenRefresh = (refreshToken) => {
     try {
-        const decodedPharmacy = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET)
-        delete decodedPharmacy.exp
-        delete decodedPharmacy.iat
-        const accessToken = generateAccessToken(decodedPharmacy)
+        const decodedAdmin = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET)
+        delete decodedAdmin.exp
+        delete decodedAdmin.iat
+        const accessToken = generateAccessToken(decodedAdmin)
         return accessToken;
     } catch (error) {
         console.log(error)
@@ -44,8 +44,8 @@ exports.tokenRefresh = (refreshToken) => {
 }
 
 exports.forgotPassword = async (email) => {
-    const pharmacy = await Pharmacy.findOne({ email })
-    if (pharmacy) {
+    const admin = await Admin.findOne({ email })
+    if (admin) {
         const OTP = makeUid(6)
 
         const salt = await bcrypt.genSalt(10);
@@ -53,19 +53,19 @@ exports.forgotPassword = async (email) => {
 
         const expiration = 30
         const expirationTime = Date.now() + expiration * 60 * 1000
-        pharmacy.accountRecovery = {
+        admin.accountRecovery = {
             OTP: hashedOTP,
             expirationTime
         }
-        await pharmacy.save()
+        await admin.save()
 
-        const resetUrl = config.FROENTEND_DOMAIN + "/" + config.PASSWORD_RESET_PATH + "/" + email + "/" + OTP
+        const resetUrl = config.FROENTEND_DOMAIN + "/" + config.ADMIN_PASSWORD_RESET_PATH + "/" + email + "/" + OTP
 
         console.log(resetUrl)
         const params = {
             to: email,
-            subject: "Pharmacy Password recovery",
-            title: "Pharmacy Password Recovery",
+            subject: "Admin Password recovery",
+            title: "Admin Password Recovery",
             text:
                 "Your password reset vertification code is " +
                 OTP,
@@ -100,9 +100,9 @@ exports.forgotPassword = async (email) => {
 
 exports.verifyOTP = async ({ email, OTP }) => {
     try {
-        const pharmacy = await Pharmacy.findOne({ email })
+        const admin = await Admin.findOne({ email })
 
-        if (pharmacy && pharmacy.accountRecovery && await bcrypt.compare(OTP, pharmacy.accountRecovery.OTP)) {
+        if (admin && admin.accountRecovery && await bcrypt.compare(OTP, admin.accountRecovery.OTP)) {
             return "Valid OTP"
 
         } else {
@@ -115,16 +115,16 @@ exports.verifyOTP = async ({ email, OTP }) => {
 
 exports.resetPassword = async ({ email, OTP, newPassword }) => {
     try {
-        const pharmacy = await Pharmacy.findOne({ email })
+        const admin = await Admin.findOne({ email })
 
-        if (pharmacy && pharmacy.accountRecovery && await bcrypt.compare(OTP, pharmacy.accountRecovery.OTP)) {
-            if (pharmacy.accountRecovery.expirationTime && (pharmacy.accountRecovery.expirationTime > Date.now())) {
+        if (admin && admin.accountRecovery && await bcrypt.compare(OTP, admin.accountRecovery.OTP)) {
+            if (admin.accountRecovery.expirationTime && (admin.accountRecovery.expirationTime > Date.now())) {
                 const salt = await bcrypt.genSalt(10);
                 const hashedPassword = await bcrypt.hash(newPassword, salt);
-                pharmacy.password = hashedPassword
-                pharmacy.accountRecovery = { OTP: null, expirationTime: null }
-                await pharmacy.save()
-                // const result = await Pharmacy.updateOne({ _id: pharmacy._id }, {
+                admin.password = hashedPassword
+                admin.accountRecovery = { OTP: null, expirationTime: null }
+                await admin.save()
+                // const result = await Admin.updateOne({ _id: admin._id }, {
                 //     $set: { password: hashedPassword, accountRecovery: { OTP: null, expirationTime: null } }
                 // })
                 return "Password Changed"
@@ -143,7 +143,7 @@ exports.resetPassword = async ({ email, OTP, newPassword }) => {
     }
 }
 
-exports.logout = (pharmacyId) => {
+exports.logout = (adminId) => {
 
 }
 
