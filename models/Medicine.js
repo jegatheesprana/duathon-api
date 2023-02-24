@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const PharmacySchema = new Schema({
+const MedicineSchema = new Schema({
     name: {
         type: String,
         required: true
@@ -25,7 +25,7 @@ const PharmacySchema = new Schema({
     }
 }, { timestamps: true });
 
-
-const Pharmacy = mongoose.model('medicine', PharmacySchema);
-module.exports = Pharmacy
+MedicineSchema.index({ name: 'text', NDC: 'text' });
+const Medicine = mongoose.model('medicine', MedicineSchema);
+module.exports = Medicine
 
