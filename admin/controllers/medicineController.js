@@ -31,6 +31,7 @@ const createMedicine = (req, res) => {
     // if (!code | !name || !floorId) {
     //     return res.status(500).send("Bad Request")
     // }
+    console.log(name, manufacture, supplier)
     medicineService.createMedicine({ name, manufacture, supplier })
         .then((medicine) => {
             res.status(201).json(medicine)

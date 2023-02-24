@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const PharmacySchema = new Schema({
+const InventorySchema = new Schema({
     medicineId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'medicines',
@@ -26,6 +26,6 @@ const PharmacySchema = new Schema({
 }, { timestamps: true });
 
 
-const Pharmacy = mongoose.model('inventory', PharmacySchema);
-module.exports = Pharmacy
+const Inventory = mongoose.model('inventory', InventorySchema);
+module.exports = Inventory
 
