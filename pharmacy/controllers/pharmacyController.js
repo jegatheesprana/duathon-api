@@ -1,7 +1,7 @@
 const pharmacyService = require('../services/pharmacyServices')
 
-const getAllPharmacys = (req, res, next) => {
-    pharmacyService.getAllPharmacys()
+const getAllPharmacies = (req, res, next) => {
+    pharmacyService.getAllPharmacies()
         .then((data) => {
             res.json(data)
         })
@@ -18,6 +18,9 @@ const getPharmacy = (req, res) => {
     }
     pharmacyService.getPharmacy(pharmacyId)
         .then((data) => {
+            if (!data){
+                throw Error("Pharmacy not found!")
+            }
             res.json(data)
         })
         .catch((err) => {
@@ -48,8 +51,8 @@ const updatePharmacy = (req, res) => {
     if (!pharmacyId || !email | !name || !address || !phone || !licenseNumber) {
         return res.status(500).send("Bad Request")
     }
-    pharmacyService.updatePharmacy({ name, email, address, phone, licenseNumber, website, operationgHours, owner })
-        .then(() => {
+    pharmacyService.updatePharmacy({pharmacyId, name, email, address, phone, licenseNumber, website, operationgHours, owner })
+        .then((result) => {
             res.status(201).json({ status: true })
         })
         .catch((err) => {
@@ -77,11 +80,11 @@ const deletePharmacy = (req, res) => {
 
 const changeStatus = (req, res) => {
     const { pharmacyId } = req.params
-    const { status } = req.body
-    if (!pharmacyId || status === undefined) {
+    const { enabled } = req.body
+    if (!pharmacyId || enabled === undefined) {
         return res.status(500).send("Bad Request")
     }
-    pharmacyService.changeStatus({ pharmacyId, status })
+    pharmacyService.changeStatus({ pharmacyId, enabled })
         .then(() => {
             res.status(201).json({ status: true })
         })
@@ -132,7 +135,7 @@ const updatePharmacyOwner = (req, res, next) => {
 }
 
 module.exports = {
-    getAllPharmacys,
+    getAllPharmacies,
     getPharmacy,
     createPharmacy,
     updatePharmacy,

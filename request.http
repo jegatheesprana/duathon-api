@@ -1,7 +1,10 @@
-GET http://localhost:8000/pharmacys
+GET http://localhost:8000/pharmacies
 
 ###
-POST http://localhost:8000/pharmacys
+GET http://localhost:8000/pharmacies/63f8607755b934277811bda9
+
+###
+POST http://localhost:8000/pharmacies
 content-type:application/json
 
 {
@@ -12,16 +15,16 @@ content-type:application/json
         "town" : "Colombo 07",
         "district": "Colombo"
     },
-    "phone": "0761234567",
-    "licenseNumber": "49494JOJ",
+    "phone": "0761234337",
+    "licenseNumber": "AAA0002",
     "website": "onlinestore@sunshineholdings.lk",
     "operationgHours": {
         "from": {
-            "hour": "09",
+            "hour": "19",
             "minute" : "00"
         },
         "to": {
-            "hour": "09",
+            "hour": "18",
             "minute" : "00"
         }
     },
@@ -30,25 +33,25 @@ content-type:application/json
         "name": "Yathu",
         "email": "example2@example.com",
         "address": "No 139/A, Dharmapala Mawatha, Colombo 07, Sri Lanka",
-        "phone": "",
-        "nic"
+        "phone": "0769872564",
+        "nic" : "199812345678"
     }
 }
 
 ###
-put http://localhost:8000/pharmacys/
+PUT http://localhost:8000/pharmacies/63f8607755b934277811bda9
 content-type:application/json
 
 {
-    "name" : "Health Gurd",
+    "name" : "Health Gurd 01",
     "email": "example2@example.com",
     "address": {
         "lane": "No 139/A, Dharmapala Mawatha",
         "town" : "Colombo 07",
         "district": "Colombo"
-    }
+    },
     "phone": "0761234567",
-    "licenseNumber": "49494JOJ",
+    "licenseNumber": "AAA0001",
     "website": "onlinestore@sunshineholdings.lk",
     "operationgHours": {
         "from": {
@@ -56,20 +59,26 @@ content-type:application/json
             "minute" : "00"
         },
         "to": {
-            "hour": "09",
+            "hour": "18",
             "minute" : "00"
         }
     },
-    "password": "password",
     "owner": {
         "name": "Yathu",
         "email": "example2@example.com",
         "address": "No 139/A, Dharmapala Mawatha, Colombo 07, Sri Lanka",
         "phone": "",
-        "nic"
+        "nic" : ""
     }
 }
 
+###
+DELETE http://localhost:8000/pharmacies/63f8593c090a620500939caf
 
+###
+PUT http://localhost:8000/pharmacies/status/63f85e02249f502688db0c8c
+content-type:application/json
 
-"Jaffna", "Kilinochchi", "Mannar", "Mullaitivu", "Vavuniya", "Puttalam", "Kurunegala", "Gampaha", "Colombo", "Kalutara", "Anuradhapura", "Polonnaruwa", "Matale", "Kandy", "Nuwara", "Eliya", "Kegalle", "Ratnapura", "Trincomalee", "Batticaloa", "Ampara", "Badulla", "Monaragala", "Hambantota", "Matara", "Galle" 
+{
+    "enabled": true
+}

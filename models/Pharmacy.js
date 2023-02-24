@@ -38,9 +38,9 @@ const PharmacySchema = new Schema({
         trim: true,
         validate: {
             validator: function (v) {
-                return /^[0-9]{9,10}/.test(v);
+                return /^\d{9,10}$/.test(v)
             },
-            message: '{VALUE} is not a valid 10 digit number!'
+            message: '{VALUE} is not a valid phone number!'
         }
     },
     licenseNumber: {
@@ -126,9 +126,9 @@ const PharmacySchema = new Schema({
             trim: true,
             validate: {
                 validator: function (v) {
-                    return /^[0-9]{9,10}/.test(v);
+                    return /^\d{9,10}$/.test(v)
                 },
-                message: '{VALUE} is not a valid 10 digit number!'
+                message: '{VALUE} is not a valid phone number!'
             }
         },
         nic: {

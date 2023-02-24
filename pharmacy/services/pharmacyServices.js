@@ -2,8 +2,8 @@ const mongoose = require('mongoose')
 const Pharmacy = require('../../models/Pharmacy')
 const bcrypt = require('bcryptjs');
 
-exports.getAllPharmacys = () => {
-    return Pharmacy.find()
+exports.getAllPharmacies = () => {
+    return Pharmacy.find({},'-password')
 }
 
 exports.getPharmacy = (pharmacyId) => {
@@ -42,10 +42,10 @@ exports.deletePharmacy = (pharmacyId) => {
     return Pharmacy.deleteOne({ _id: pharmacyId })
 }
 
-exports.changeStatus = ({ pharmacyId, status }) => {
+exports.changeStatus = ({ pharmacyId, enabled }) => {
     return Pharmacy.updateOne({ _id: pharmacyId }, {
         $set: {
-            status
+            enabled
         }
     })
 }
