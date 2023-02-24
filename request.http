@@ -1,10 +1,7 @@
-GET http://localhost:8000/pharmacy/pharmacies
+GET http://localhost:8000/pharmacy/pharmacys
 
 ###
-GET http://localhost:8000/pharmacy/pharmacies/63f8607755b934277811bda9
-
-###
-POST http://localhost:8000/pharmacy/pharmacies
+POST http://localhost:8000/pharmacys
 content-type:application/json
 
 {
@@ -38,91 +35,89 @@ content-type:application/json
     }
 }
 
+
+### Medicines
 ###
-PUT http://localhost:8000/pharmacy/pharmacies/63f8607755b934277811bda9
+POST http://localhost:8000/pharmacy/medicines
 content-type:application/json
 
 {
-    "name" : "Health Gurd 01",
-    "email": "example2@example.com",
-    "address": {
-        "lane": "No 139/A, Dharmapala Mawatha",
-        "town" : "Colombo 07",
-        "district": "Colombo"
-    },
-    "phone": "0761234567",
-    "licenseNumber": "AAA0001",
-    "website": "onlinestore@sunshineholdings.lk",
-    "operationgHours": {
-        "from": {
-            "hour": "09",
-            "minute" : "00"
-        },
-        "to": {
-            "hour": "18",
-            "minute" : "00"
-        }
-    },
-    "owner": {
-        "name": "Yathu",
-        "email": "example2@example.com",
-        "address": "No 139/A, Dharmapala Mawatha, Colombo 07, Sri Lanka",
-        "phone": "",
-        "nic" : ""
-    }
+    "name":"Lipitor",
+    "manufacture": "CVS Pharmacy",
+    "supplier":"Pfizer Inc"
 }
 
 ###
-DELETE http://localhost:8000/pharmacy/pharmacies/63f8607755b934277811bda9
+GET http://localhost:8000/pharmacy/medicines
+
 
 ###
-PUT http://localhost:8000/pharmacy/pharmacies/status/63f8607755b934277811bda9
+GET http://localhost:8000/pharmacy/medicines/63f85c2a722da73b0cfc1d75
+
+
+###
+PUT http://localhost:8000/pharmacy/medicines/63f85c2a722da73b0cfc1d75
 content-type:application/json
 
 {
-    "enabled": true
+    "name":"Lipitor",
+    "manufacture": "CVS Pharmacy",
+    "supplier":"Pfizer Inc."
 }
 
+###
+DELETE http://localhost:8000/pharmacy/medicines/63f85595cd28650decab175d
 
-#################################
-OWNER
-#################################
-POST http://localhost:8000/pharmacy/auth/login
+###
+PUT http://localhost:8000/pharmacy/medicines/status/63f85c2a722da73b0cfc1d75
 content-type:application/json
 
 {
-    "email": "example2@example.com",
-    "password": "password"
+    "status":false
 }
 
-####
-POST http://localhost:8000/pharmacy/auth/refreshToken
+
+### Inventory
+###
+POST http://localhost:8000/pharmacy/inventories
 content-type:application/json
 
 {
-    "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaGFybWFjeSI6eyJfaWQiOiI2M2Y4NjBlYzU1YjkzNDI3NzgxMWJkYjAiLCJlbWFpbCI6ImV4YW1wbGUyQGV4YW1wbGUuY29tIn0sInR5cGUiOiJhdXRob3JpemF0aW9uIiwicm9sZSI6Im93bmVyIiwiaWF0IjoxNjc3MjI0MTE1LCJleHAiOjE2Nzc2NTYxMTV9.2IkIflKv4Um9lWJ_DvzQ64hwFTg846YA-Mv1BJLiw4k"
+    "medicineId":"63f85c2a722da73b0cfc1d75",
+    "pharmacyId":"63f860ec55b934277811bdb0",
+    "quantity": 2,
+    "expDate": "2024/12/01",
+    "price":100
 }
 
-####
-POST http://localhost:8000/pharmacy/auth/forgotPassword/email
+###
+GET http://localhost:8000/pharmacy/inventories/
+
+###
+GET http://localhost:8000/pharmacy/inventories/63f860ec55b934277811bdb0
+
+
+###
+PUT http://localhost:8000/pharmacy/inventories/63f87805df6c8307cce5b8a1
 content-type:application/json
 
 {
-    "email": "yathurshan.18@cse.mrt.ac.lk"
+    
+    "quantity": 2,
+    "expDate": "2025/12/01",
+    "price":100,
+    "status": true
 }
-####
-POST http://localhost:8000/pharmacy/auth/forgotPassword/verify
+
+###
+DELETE http://localhost:8000/pharmacy/inventories/63f874492a8d1958602a2b1c
+
+###
+PUT http://localhost:8000/pharmacy/inventories/status/63f874492a8d1958602a2b1c
 content-type:application/json
 
 {
-    "email": "yathurshan.18@cse.mrt.ac.lk",
-    "OTP" : "083238"
+    "status":false
 }
-####
-POST http://localhost:8000/pharmacy/auth/forgotPassword/reset
-content-type:application/json
 
-{
-    "email": "yathurshan.18@cse.mrt.ac.lk",
-    "OTP" : "083238"
-}
+
