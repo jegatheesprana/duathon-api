@@ -60,11 +60,11 @@ exports.getPharmacyByFloor = (floorId) => {
     ])
 }
 
-exports.getPharmacyByBuilding = async (buildingId) => {
+exports.getPharmacyByDistrict = async (district) => {
     return Pharmacy.aggregate([
         {
             $match: {
-                buildingId: mongoose.Types.ObjectId(buildingId)
+                "address.district": district
             }
         }
     ])

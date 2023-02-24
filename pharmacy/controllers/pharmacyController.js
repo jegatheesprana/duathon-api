@@ -95,27 +95,12 @@ const changeStatus = (req, res) => {
         .catch(error => next(error))
 }
 
-const getPharmacyByFloor = (req, res) => {
-    const { floorId } = req.params
-    if (!floorId) {
+const getPharmacyByDistrict = (req, res) => {
+    const { district } = req.params
+    if (!district) {
         return res.status(500).send("Bad Request")
     }
-    pharmacyService.getPharmacyByFloor(floorId)
-        .then((data) => {
-            res.json(data)
-        })
-        .catch((err) => {
-            console.log(err)
-            return res.status(500).send("Internal Server Error")
-        })
-}
-
-const getPharmacyByBuilding = (req, res) => {
-    const { buildingId } = req.params
-    if (!buildingId) {
-        return res.status(500).send("Bad Request")
-    }
-    pharmacyService.getPharmacyByBuilding(buildingId)
+    pharmacyService.getPharmacyByDistrict(district)
         .then((data) => {
             res.json(data)
         })
@@ -126,13 +111,6 @@ const getPharmacyByBuilding = (req, res) => {
         .catch(error => next(error))
 }
 
-const updatePharmacyOwner = (req, res, next) => {
-    pharmacyService.updatePharmacyOwner(req.params, req.body)
-        .then(() => {
-            res.json({ success: true })
-        })
-        .catch(error => next(error))
-}
 
 module.exports = {
     getAllPharmacies,
@@ -141,7 +119,5 @@ module.exports = {
     updatePharmacy,
     deletePharmacy,
     changeStatus,
-    getPharmacyByFloor,
-    getPharmacyByBuilding,
-    updatePharmacyOwner
+    getPharmacyByDistrict,
 }
