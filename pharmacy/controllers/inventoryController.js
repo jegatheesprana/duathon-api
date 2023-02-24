@@ -2,8 +2,9 @@ const inventoryService = require('../services/inventoryService')
 
 const getAllInventories = (req, res, next) => {
     const user = req.user;
-    const { pharmacyId } = user
-    inventoryService.getInventory(pharmacyId)
+    const pharmacyId = user.pharmacy._id
+    console.log(pharmacyId)
+    inventoryService.getAllInventories(pharmacyId)
         .then(data => {
             res.json(data)
         })
