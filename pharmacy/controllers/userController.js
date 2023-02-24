@@ -2,14 +2,19 @@ const userService = require('../services/userService')
 
 const getMe = (req, res, next) => {
     const user = req.user;
-    userService.getMe(user.employee._id)
-        .then(result => {
-            res.json(result)
-        })
-        .catch(e => {
-            console.log(e)
-            res.status(500).send("An Error occured")
-        })
+    if (user.pharmacy) {
+        userService.getMe(user.pharmacy._id)
+            .then(result => {
+                res.json(result)
+            })
+            .catch(e => {
+                console.log(e)
+                res.status(500).send("An Error occured")
+            })
+    } else {
+        res.status(404).send("Cannot find the useer")
+    }
+
 }
 
 const updateInfo = (req, res, next) => {
