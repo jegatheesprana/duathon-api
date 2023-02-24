@@ -9,14 +9,14 @@ content-type:application/json
 
 {
     "name" : "Health Gurd",
-    "email": "example2@example.com",
+    "email": "yathurshan.18@cse.mrt.ac.lk",
     "address": {
         "lane": "No 139/A, Dharmapala Mawatha",
         "town" : "Colombo 07",
         "district": "Colombo"
     },
     "phone": "0761234337",
-    "licenseNumber": "AAA0002",
+    "licenseNumber": "AAA0003",
     "website": "onlinestore@sunshineholdings.lk",
     "operationgHours": {
         "from": {
@@ -104,9 +104,25 @@ content-type:application/json
 }
 
 ####
-POST http://localhost:8000/pharmacy/auth/forgotPassword/kalayathu1998@gmail.com
+POST http://localhost:8000/pharmacy/auth/forgotPassword/email
 content-type:application/json
 
 {
-    "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaGFybWFjeSI6eyJfaWQiOiI2M2Y4NjBlYzU1YjkzNDI3NzgxMWJkYjAiLCJlbWFpbCI6ImV4YW1wbGUyQGV4YW1wbGUuY29tIn0sInR5cGUiOiJhdXRob3JpemF0aW9uIiwicm9sZSI6Im93bmVyIiwiaWF0IjoxNjc3MjI0MTE1LCJleHAiOjE2Nzc2NTYxMTV9.2IkIflKv4Um9lWJ_DvzQ64hwFTg846YA-Mv1BJLiw4k"
+    "email": "yathurshan.18@cse.mrt.ac.lk"
+}
+####
+POST http://localhost:8000/pharmacy/auth/forgotPassword/verify
+content-type:application/json
+
+{
+    "email": "yathurshan.18@cse.mrt.ac.lk",
+    "OTP" : "083238"
+}
+####
+POST http://localhost:8000/pharmacy/auth/forgotPassword/reset
+content-type:application/json
+
+{
+    "email": "yathurshan.18@cse.mrt.ac.lk",
+    "OTP" : "083238"
 }

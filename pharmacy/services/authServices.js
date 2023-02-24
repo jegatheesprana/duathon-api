@@ -47,10 +47,14 @@ exports.forgotPassword = async (email) => {
     const pharmacy = await Pharmacy.findOne({ email })
     if (pharmacy) {
         const OTP = makeUid(6)
+
+        const salt = await bcrypt.genSalt(10);
+        const hashedOTP = await bcrypt.hash(OTP, salt);
+
         const expiration = 30
         const expirationTime = Date.now() + expiration * 60 * 1000
         pharmacy.accountRecovery = {
-            OTP: OTP,
+            OTP: hashedOTP,
             expirationTime
         }
         await pharmacy.save()
@@ -60,8 +64,8 @@ exports.forgotPassword = async (email) => {
         console.log(resetUrl)
         const params = {
             to: email,
-            subject: "Password recovery",
-            title: "ElectroLeaf Password Recovery",
+            subject: "Pharmacy Password recovery",
+            title: "Pharmacy Password Recovery",
             text:
                 "Your password reset vertification code is " +
                 OTP,
@@ -98,8 +102,7 @@ exports.verifyOTP = async ({ email, OTP }) => {
     try {
         const pharmacy = await Pharmacy.findOne({ email })
 
-        if (pharmacy.accountRecovery && pharmacy.accountRecovery.OTP === OTP) {
-
+        if (pharmacy.accountRecovery && await bcrypt.compare(OTP, pharmacy.accountRecovery.OTP)) {
             return "Valid OTP"
 
         } else {
@@ -114,7 +117,7 @@ exports.resetPassword = async ({ email, OTP, newPassword }) => {
     try {
         const pharmacy = await Pharmacy.findOne({ email })
 
-        if (pharmacy.accountRecovery && pharmacy.accountRecovery.OTP === OTP) {
+        if (pharmacy.accountRecovery && await bcrypt.compare(OTP, pharmacy.accountRecovery.OTP)) {
             if (pharmacy.accountRecovery.expirationTime && (pharmacy.accountRecovery.expirationTime > Date.now())) {
                 const salt = await bcrypt.genSalt(10);
                 const hashedPassword = await bcrypt.hash(newPassword, salt);
