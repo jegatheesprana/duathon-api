@@ -27,12 +27,12 @@ const getMedicine = (req, res) => {
 }
 
 const createMedicine = (req, res) => {
-    const { name, manufacture, supplier } = req.body
+    const { name, manufacture, supplier, NDC } = req.body
     // if (!code | !name || !floorId) {
     //     return res.status(500).send("Bad Request")
     // }
     console.log(name, manufacture, supplier)
-    medicineService.createMedicine({ name, manufacture, supplier })
+    medicineService.createMedicine({ name, manufacture, supplier, NDC })
         .then((medicine) => {
             res.status(201).json(medicine)
         })
@@ -45,11 +45,11 @@ const createMedicine = (req, res) => {
 
 const updateMedicine = (req, res) => {
     const { medicineId } = req.params
-    const { name, manufacture, supplier } = req.body
-    if (!medicineId || !name | !manufacture || !supplier) {
+    const { name, manufacture, supplier, NDC } = req.body
+    if (!medicineId || !name | !manufacture || !supplier || !NDC) {
         return res.status(500).send("Bad Request")
     }
-    medicineService.updateMedicine({ medicineId, name, manufacture, supplier })
+    medicineService.updateMedicine({ medicineId, name, manufacture, supplier, NDC })
         .then(() => {
             res.status(201).json({ status: true })
         })

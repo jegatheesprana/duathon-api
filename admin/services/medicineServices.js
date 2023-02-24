@@ -97,17 +97,17 @@ exports.getMedicine = (MedicineId) => {
     ]).then(data => data[0])
 }
 
-exports.createMedicine = ({ name, manufacture, supplier }) => {
+exports.createMedicine = ({ name, manufacture, supplier, NDC }) => {
     const medicine = new Medicine({
-        name, manufacture, supplier
+        name, manufacture, supplier, NDC
     })
     return medicine.save()
 }
 
-exports.updateMedicine = ({ medicineId, name, manufacture, supplier }) => {
+exports.updateMedicine = ({ medicineId, name, manufacture, supplier, NDC }) => {
     return Medicine.updateOne({ _id: medicineId }, {
         $set: {
-            name, manufacture, supplier
+            name, manufacture, supplier, NDC
         }
     })
 }
