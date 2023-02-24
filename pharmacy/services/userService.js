@@ -1,27 +1,12 @@
 const Employee = require('../../models/Employee');
 const bcrypt = require('bcryptjs');
 const mongoose = require('mongoose')
+const Pharmacy = require('../../models/Pharmacy')
 
 exports.getMe = (_id) => {
-    return Employee.aggregate([
+    return Pharmacy.aggregate([
         {
             $match: { _id: mongoose.Types.ObjectId(_id) }
-        },
-        {
-            $lookup: {
-                from: "roles",
-                as: "role",
-                localField: "jobRoleId",
-                foreignField: "_id"
-            }
-        },
-        {
-            $lookup: {
-                from: "employees",
-                as: "reportTo",
-                localField: "reportToId",
-                foreignField: "_id"
-            }
         },
         {
             $project: {

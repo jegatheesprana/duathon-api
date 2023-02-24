@@ -18,18 +18,18 @@ const PharmacySchema = new Schema({
         }
     },
     address: {
-        lane : {
+        lane: {
             type: String,
             required: [true, "Pharmacy lane is required!"],
         },
-        town : {
+        town: {
             type: String,
             required: [true, "Pharmacy town is required!"],
         },
-        district : {
+        district: {
             type: String,
             required: [true, "Pharmacy district is required!"],
-            enum : ["Jaffna", "Kilinochchi", "Mannar", "Mullaitivu", "Vavuniya", "Puttalam", "Kurunegala", "Gampaha", "Colombo", "Kalutara", "Anuradhapura", "Polonnaruwa", "Matale", "Kandy", "Nuwara", "Eliya", "Kegalle", "Ratnapura", "Trincomalee", "Batticaloa", "Ampara", "Badulla", "Monaragala", "Hambantota", "Matara", "Galle"]
+            enum: ["Jaffna", "Kilinochchi", "Mannar", "Mullaitivu", "Vavuniya", "Puttalam", "Kurunegala", "Gampaha", "Colombo", "Kalutara", "Anuradhapura", "Polonnaruwa", "Matale", "Kandy", "Nuwara", "Eliya", "Kegalle", "Ratnapura", "Trincomalee", "Batticaloa", "Ampara", "Badulla", "Monaragala", "Hambantota", "Matara", "Galle"]
         }
     },
     phone: {
@@ -158,6 +158,7 @@ const PharmacySchema = new Schema({
     }
 }, { timestamps: true });
 
+PharmacySchema.index({ name: 'text', 'address.district': 'text', 'address.lane': 'text' });
 const PharmacyModel = mongoose.model('pharmacy', PharmacySchema);
 
 module.exports = PharmacyModel;
